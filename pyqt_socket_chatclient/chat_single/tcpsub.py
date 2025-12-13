@@ -1,9 +1,8 @@
-#! /usr/bin/python
-from PyQt4.QtNetwork import *
+from PyQt5.Qt import *
 from staticvar import *
 
 #we create our own QTcpServer subclass
-#this server creates a new socket for each incomming connection
+#this server creates a new socket for each incoming connection
 
 class TcpServer(QTcpServer):
     def __init__(self, parent=None):

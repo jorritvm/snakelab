@@ -1,8 +1,5 @@
-#! /usr/bin/python
 import sys
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-from PyQt4.QtNetwork import *
+from PyQt5.Qt import *
 from staticvar import *
 
 class Chatclient(QDialog):

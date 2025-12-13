@@ -1,9 +1,8 @@
 #! /usr/bin/python
 import sys
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-from PyQt4.QtNetwork import *
+from PyQt5.Qt import *
 from staticvar import *
+from ctypes.wintypes import UINT
 
 class Chatclient(QDialog):
 
@@ -70,29 +69,31 @@ class Chatclient(QDialog):
     
     def connectToServer(self):
         # Create connection to server
-        self.updateGui("Connecting to server...")
+        self.updateUi("Connecting to server...")
         self.socket.connectToHost("localhost", PORT)
         self.setButtonsEnabled(False)
     
     
     def connectedToServer(self):
-        self.updateGui("Connected to server...")
+        self.updateUi("Connected to server...")
 
         
     def issueRequest(self, mtype, nick=None, value=None):
         request = QByteArray()
-        stream = QDataStream(self.request, QIODevice.WriteOnly)
+        stream = QDataStream(request, QIODevice.WriteOnly)
+        QDATASTREAMVERSION
         stream.setVersion(QDATASTREAMVERSION)
+        
         stream.writeUInt16(0)
         stream.writeQString(mtype)
         stream.writeQString(nick)
         stream.writeQString(value)
         stream.device().seek(0)
-        stream.writeUInt16(self.request.size() - SIZEOF_UINT)
+        stream.writeUInt16(request.size() - SIZEOF_UINT)
         self.sendRequest(request)
     
     
-    def sendRequest(self):
+    def sendRequest(self, request):
         self.socket.write(request)
         self.nextBlockSize = 0
         self.lineedit.setText("") # try to put this somewhere else
