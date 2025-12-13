@@ -1,0 +1,16 @@
+<sites>
+<site>
+<name>testname2</name>
+<ip>9.8.7.6</ip>
+<port>9876</port>
+<login>testlogin2</login>
+<password>testpass2</password>
+</site>
+<site>
+    <name>testname</name>
+    <ip>1.2.3.4</ip>
+    <port>1234</port>
+    <login>testlogin</login>
+    <password>testpass</password>
+</site>
+</sites>
