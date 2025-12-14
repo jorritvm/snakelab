@@ -3,11 +3,10 @@
 * [test return codes](#test-return-codes)
   * [Return Codes](#return-codes)
   * [Results when running the scripts directly using the python runtime](#results-when-running-the-scripts-directly-using-the-python-runtime)
-    * [Works fine ran directly using the python runtime](#works-fine-ran-directly-using-the-python-runtime)
-    * [Crashes ran directly using the python runtime](#crashes-ran-directly-using-the-python-runtime)
+    * [Results are as expected on windows](#results-are-as-expected-on-windows)
     * [Same conclusions on linux](#same-conclusions-on-linux)
   * [Results when running the scripts through a cmd (windows) shell script wrapper](#results-when-running-the-scripts-through-a-cmd-windows-shell-script-wrapper)
-    * [Shell executing a single script propagates the return code correctly](#shell-executing-a-single-script-propagates-the-return-code-correctly)
+    * [Shell script executing a single script propagates the return code correctly](#shell-script-executing-a-single-script-propagates-the-return-code-correctly)
     * [Shell executing multiple scripts does NOT propagate the CRASH return code correctly. Only reflects the last one.](#shell-executing-multiple-scripts-does-not-propagate-the-crash-return-code-correctly-only-reflects-the-last-one)
     * [If you design the cmd file correctly the return code can be propagated correctly](#if-you-design-the-cmd-file-correctly-the-return-code-can-be-propagated-correctly)
   * [Results when running the scripts through a bash (linux) shell script wrapper](#results-when-running-the-scripts-through-a-bash-linux-shell-script-wrapper)
@@ -26,15 +25,15 @@ We will test how these propagate through wrapper shell scripts, on both windows 
 - other: Custom Error Codes - Specific error codes can be defined for particular error conditions as needed.
 
 ## Results when running the scripts directly using the python runtime
-### Works fine ran directly using the python runtime
+### Results are as expected on windows
+Return code 0 is returned for a script that closes gracefully.
 ```commandline
 C:\python\309\python.exe C:\dev\python\snakelab\return_codes\works_fine.py 
 Example of a method that runs fine
 
 Process finished with exit code 0
 ```
-
-### Crashes ran directly using the python runtime
+Return code 1 is returned for a script that crashes.
 ```commandline
 C:\python\309\python.exe C:\dev\python\snakelab\return_codes\crashes.py 
 Example of a method that crashes fine
@@ -67,7 +66,7 @@ jorrit@LENOVO:/mnt/c/dev/python/snakelab/return_codes$ echo $?
 ```
 
 ## Results when running the scripts through a cmd (windows) shell script wrapper
-### Shell executing a single script propagates the return code correctly
+### Shell script executing a single script propagates the return code correctly
 ```commandline
 C:\dev\python\snakelab\return_codes>run_one.cmd works_fine.py
 Example of a method that runs fine
@@ -128,7 +127,7 @@ C:\dev\python\snakelab\return_codes>echo %ERRORLEVEL%
 ```
 
 ## Results when running the scripts through a bash (linux) shell script wrapper
-### Shell executing a single script behaves differently from windows. It does NOT propagate the return code correctly by default
+### Bash shell scripts do NOT  propagate the return code correctly by default
 By default, a Bash script exits with the return code of the last command executed, which in your case is echo, not python3.
 ```commandline
 jorrit@LENOVO:/mnt/c/dev/python/snakelab/return_codes$ bash run_one.sh works_fine.py 
@@ -149,7 +148,7 @@ Wrapper sees return code from python: 1
 jorrit@LENOVO:/mnt/c/dev/python/snakelab/return_codes$ echo $?
 0  <-- porblem!
 ```
-
+### There are 2 ways to design your shell script to propagate the return code correctly
 We can fix this by capturing the return code from python3 and exiting with that code:
 ```commandline
 jorrit@LENOVO:/mnt/c/dev/python/snakelab/return_codes$ bash run_one_fix_1.sh works_fine.py 
@@ -191,8 +190,8 @@ jorrit@LENOVO:/mnt/c/dev/python/snakelab/return_codes$ echo $?
 ```
 
 
-
 ## Results when running the scripts through a python wrapper (subprocess)
+### On windows, it only works if the wrapper propagates the return code explicitly
 If you create a naive wrapper like this:
 ```python
 import sys
@@ -242,6 +241,7 @@ Exception: Some error message
 C:\dev\python\snakelab\return_codes>echo %ERRORLEVEL%                             
 1
 ```
+### On linux it's the same
 As expected this works on linux too:
 ```commandline
 jorrit@LENOVO:/mnt/c/dev/python/snakelab/return_codes$ python3 run_one_subprocess_fixed.py works_fine.py 
