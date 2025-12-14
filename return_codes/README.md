@@ -10,7 +10,8 @@
     * [Shell executing multiple scripts does NOT propagate the CRASH return code correctly. Only reflects the last one.](#shell-executing-multiple-scripts-does-not-propagate-the-crash-return-code-correctly-only-reflects-the-last-one)
     * [If you design the cmd file correctly the return code can be propagated correctly](#if-you-design-the-cmd-file-correctly-the-return-code-can-be-propagated-correctly)
   * [Results when running the scripts through a bash (linux) shell script wrapper](#results-when-running-the-scripts-through-a-bash-linux-shell-script-wrapper)
-    * [Shell executing a single script behaves differently from windows. It does NOT propagate the return code correctly by default](#shell-executing-a-single-script-behaves-differently-from-windows-it-does-not-propagate-the-return-code-correctly-by-default)
+    * [Bash shell scripts do NOT  propagate the return code correctly by default](#bash-shell-scripts-do-not--propagate-the-return-code-correctly-by-default)
+    * [There are 2 ways to design your shell script to propagate the return code correctly](#there-are-2-ways-to-design-your-shell-script-to-propagate-the-return-code-correctly)
   * [Results when running the scripts through a python wrapper (subprocess)](#results-when-running-the-scripts-through-a-python-wrapper-subprocess)
   * [Author:](#author)
 <!-- TOC -->
